@@ -1,5 +1,5 @@
 class HousesController < ApplicationController
-  
+
   def index
     @houses = House.all.order(created_at: :desc)
     json_response(@houses)
@@ -16,6 +16,18 @@ class HousesController < ApplicationController
   def show
     @house = House.find(params[:id])
     json_response(@house)
+  end
+
+  def update
+    @house = House.find(params[:id])
+    @house.update!(house_params)
+    json_response(@house)
+  end
+
+  def destroy
+    @house = House.find(params[:id])
+    @house.destroy
+    head :no_content
   end
 
   private

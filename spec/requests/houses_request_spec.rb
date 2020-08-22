@@ -83,4 +83,28 @@ RSpec.describe 'Houses', type: :request do
 
     end
   end
+
+  describe 'PUT /houses/:id' do
+    let(:valid_attributes) { { price: 10000 }.to_json }
+
+    context 'when the house exists' do
+      before { put "/houses/#{house_id}", params: valid_attributes, headers: headers }
+
+      it 'updates the house' do
+        expect(json['price']).to eq(10000)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
+
+  describe 'DELETE /houses/:id' do
+    before { delete "/houses/#{house_id}", headers: headers }
+
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
 end
