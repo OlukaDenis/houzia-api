@@ -1,10 +1,10 @@
 FactoryBot.define do
-  factory :user do
+  factory :admin, class: 'User' do
     username { Faker::Name.name }
-    email { Faker::Internet.email }
-    image { 'me.com/image.png' }
-    admin { false }
+    email { 'admin@gmail.com' }
     password { 'foobar' }
+    admin { true }
     password_confirmation { 'foobar' }
+    image { 'image.png'}
   end
 end

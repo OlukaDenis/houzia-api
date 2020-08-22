@@ -9,12 +9,13 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    user = User.new(user_params)
-    user.email == 'admin@gmail.com' ? user.admin = true : user.admin = false
-    user.save!
-    auth_token = AuthenticateUser.new(user.email, user.password).call
-    response = { message: Message.account_created, auth_token: auth_token }
-    json_response(response, :created)
+    @user = User.new(user_params)
+    @user.admin = true if @user.email == 'admin@gmail.com'
+    if @user.save!
+      auth_token = AuthenticateUser.new(@user.email, @user.password).call
+      response = { message: Message.account_created, auth_token: auth_token }
+      json_response(response, :created)
+    end
   end
 
 
