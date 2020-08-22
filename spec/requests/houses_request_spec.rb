@@ -4,10 +4,10 @@ RSpec.describe 'Houses', type: :request do
   let(:user) { create(:user) }
   let!(:houses) { create_list(:house, 10, user_id: user.id) }
   let(:house_id) { houses.first.id }
-  let(:single_headers) { valid_headers }
+  let(:headers) { valid_headers }
 
   describe 'GET /houses' do
-    before { get '/houses', params: {}, headers: single_headers }
+    before { get '/houses', params: {}, headers: headers }
 
     context 'when the request is valid' do
       
@@ -24,7 +24,7 @@ RSpec.describe 'Houses', type: :request do
   end
 
   describe 'GET /houses/:id' do
-    before { get "/houses/#{house_id}", params: {}, headers: single_headers }
+    before { get "/houses/#{house_id}", params: {}, headers: headers }
 
     context 'when house exists' do
       
@@ -54,49 +54,33 @@ RSpec.describe 'Houses', type: :request do
 
 
   describe 'POST /houses' do
-    let(:headers) { valid_headers.except('Authorization') }
+    let!(:user) { create(:user) }
+    let(:valid_attributes) { { name: 'House', description: 'This is a house', image: 'image.png', price: 3000, user_id: user.id }.to_json }
 
-    def house_headers(token)
-      {
-        'Authorization' => token.to_s,
-        'Content-Type' => 'application/json'
-      }
-    end
+    context 'when request is valid' do
+      before { post '/houses', params: valid_attributes, headers: headers }
 
-    let(:admin_credentials) do 
-      { 
-        email: user.email, 
-        password: user.password
-      }.to_json
-    end
-
-    def valid_attributes(id)
-      attributes_for(:house,
-                    name: 'House',
-                    description: 'This is description',
-                    price: 3000,
-                    user_id: id,
-                    image: 'image')
-    end
-
-    context 'when the request is valid' do
-      before { post '/auth/login', params: admin_credentials, headers: headers }
-      
-      it 'creates a house' do
-        token = json['auth_token']
-        post '/houses', params: valid_attributes(user.id), headers: house_headers(token)
+      it 'should save the house' do
         expect(json['price']).to eq(3000)
       end
 
-      it 'Does not create a house without valid parameters' do
-        token = json['auth_token']
-        post '/houses', headers: house_headers(token), params: {}
-        expect(response.status).to eq(422)
+      it 'return status code 201' do
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context 'when request is not valid' do
+      let(:user) { create(:user, admin: false) }
+      before { post '/houses', params: valid_attributes, headers: headers }
+
+      it 'should not save the house' do
+        expect(response.message).to eq('No Content')
       end
 
-      it 'returns status code 200' do
-        expect(response).to have_http_status(200)
+      it 'return status code 204' do
+        expect(response).to have_http_status(204)
       end
+
     end
   end
 end
