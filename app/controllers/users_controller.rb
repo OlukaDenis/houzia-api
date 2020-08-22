@@ -1,16 +1,16 @@
 class UsersController < ApplicationController
-  # skip_before_action :authorize_request, only: :create
+  skip_before_action :authorize_request, only: :create
 
   # GET /users
   def index
     @users = User.all
-    json_response(@user)
+    json_response(@users)
   end
 
   # POST /users
   def create
     user = User.new(user_params)
-    user.admin = true if ['admin@gmail.com'].include?(user.email)
+    user.email == 'admin@gmail.com' ? user.admin = true : user.admin = false
     user.save!
     auth_token = AuthenticateUser.new(user.email, user.password).call
     response = { message: Message.account_created, auth_token: auth_token }
@@ -25,6 +25,7 @@ class UsersController < ApplicationController
         :username,
         :email,
         :image,
+        :admin,
         :password,
         :password_confirmation
       )
