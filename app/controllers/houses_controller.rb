@@ -20,13 +20,13 @@ class HousesController < ApplicationController
 
   def update
     @house = House.find(params[:id])
-    @house.update!(house_params)
+    @house.update!(house_params) if current_user.admin
     json_response(@house)
   end
 
   def destroy
     @house = House.find(params[:id])
-    @house.destroy
+    @house.destroy  if current_user.admin
     head :no_content
   end
 
