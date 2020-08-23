@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Houses', type: :request do
   let(:user) { create(:user) }
-  let!(:houses) { create_list(:house, 10, user_id: user.id) }
+  let!(:houses) { create_list(:house,5, user_id: user.id) }
   let(:house_id) { houses.first.id }
   let(:headers) { valid_headers }
 
@@ -13,7 +13,7 @@ RSpec.describe 'Houses', type: :request do
       
       it 'should return house list' do
         expect(json).not_to be_empty
-        expect(json.size).to eq(10)
+        expect(json.size).to eq(5)
       end
 
       it 'returns status code 200' do
@@ -30,7 +30,8 @@ RSpec.describe 'Houses', type: :request do
       
       it 'should return the house' do
         expect(json).not_to be_empty
-        expect(json['id']).to eq(house_id)
+        res = json['house']
+        expect(res['id']).to eq(house_id)
       end
 
       it 'returns status code 200' do
