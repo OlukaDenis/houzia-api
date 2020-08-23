@@ -74,11 +74,11 @@ RSpec.describe 'Houses', type: :request do
       before { post '/houses', params: valid_attributes, headers: headers }
 
       it 'should not save the house' do
-        expect(response.message).to eq('No Content')
+        expect(response.message).to eq('Unprocessable Entity')
       end
 
-      it 'return status code 204' do
-        expect(response).to have_http_status(204)
+      it 'return status code 422' do
+        expect(response).to have_http_status(422)
       end
 
     end

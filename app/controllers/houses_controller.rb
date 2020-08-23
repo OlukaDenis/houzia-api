@@ -1,4 +1,6 @@
 class HousesController < ApplicationController
+  before_action :require_admin, except: %i[index show]
+  before_action :house, only: %i[show update destroy]
 
   def index
     @houses = House.all.order(created_at: :desc)
@@ -7,26 +9,23 @@ class HousesController < ApplicationController
 
   def create
     @house = current_user.houses.build(house_params)
-    if current_user.admin
       @house.save!
       json_response(@house, :created)
-    end
   end
 
   def show
-    @house = House.find(params[:id])
-    json_response(@house)
+    @favorites = current_user.favorites.any? { |hse| hse.house_id == @house.id }
+    @response = { house: @house, favorites: @favorites }
+    json_response(@response)
   end
 
   def update
-    @house = House.find(params[:id])
-    @house.update!(house_params) if current_user.admin
+    @house.update!(house_params)
     json_response(@house)
   end
 
   def destroy
-    @house = House.find(params[:id])
-    @house.destroy  if current_user.admin
+    @house.destroy
     head :no_content
   end
 
@@ -34,5 +33,13 @@ class HousesController < ApplicationController
 
   def house_params
     params.permit(:name, :description, :image, :price)
+  end
+
+  def require_admin
+    raise(ExceptionHandler::InvalidToken, Message.no_admin) unless current_user.admin
+  end
+
+  def house
+    @house = House.find(params[:id])
   end
 end
