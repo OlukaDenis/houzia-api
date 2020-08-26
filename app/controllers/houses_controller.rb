@@ -14,8 +14,11 @@ class HousesController < ApplicationController
   end
 
   def show
-    @favorites = current_user.favorites.any? { |hse| hse.house_id == @house.id }
-    @response = { house: @house, favorites: @favorites }
+    @isFavorite = current_user.favorites.any? { |hse| hse.house_id == @house.id }
+    favorites = current_user.favorites.select do |ele|
+      @favorite = ele if ele.house_id == @house.id 
+    end
+    @response = { house: @house, isFavorite: @isFavorite, favorite: @favorite }
     json_response(@response)
   end
 

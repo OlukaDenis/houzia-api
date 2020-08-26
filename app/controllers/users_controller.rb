@@ -48,7 +48,7 @@ class UsersController < ApplicationController
       fav = favorites.collect(&:house)
       expense = fav.sum(&:price)
       result = {
-        details: current_user,
+        profile: current_user,
         favorites: fav,
         expense: expense
       }
