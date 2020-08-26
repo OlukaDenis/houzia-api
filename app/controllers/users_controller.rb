@@ -18,6 +18,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def update
+    @user = User.find(params[:id])
+    @user.update!(user_params)
+    json_response(@user)
+  end
+
   def show
     @result = ''
     if current_user.admin?
