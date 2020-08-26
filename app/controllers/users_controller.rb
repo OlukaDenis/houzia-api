@@ -19,12 +19,41 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-    json_response(@user)
+    @result = ''
+    if current_user.admin?
+      @houses = House.all
+      @result = admin_profile(@houses)
+    else
+      @favorites = current_user.favorites.preload(:house)
+      @result = user_profile(@favorites)
+    end
+    json_response(@result)
   end
 
 
   private
+
+    def admin_profile(houses)
+      fav = houses.reject { |el| el.favorites.empty? }
+      expense = fav.sum(&:price)
+      result = {
+        profile: current_user,
+        favorites: fav,
+        expense: expense
+      }
+      result
+    end
+
+    def user_profile(favorites)
+      fav = favorites.collect(&:house)
+      expense = fav.sum(&:price)
+      result = {
+        details: current_user,
+        favorites: fav,
+        expense: expense
+      }
+      result
+    end
 
     def user_params
       params.permit(
