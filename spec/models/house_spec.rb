@@ -6,5 +6,5 @@ RSpec.describe House, type: :model do
   it { should validate_presence_of(:image) }
   it { should validate_presence_of(:price) }
   it { should belong_to(:user) }
-  it { should have_many(:favorites).dependent(:destroy)}
+  it { should have_many(:favorites).dependent(:destroy) }
 end

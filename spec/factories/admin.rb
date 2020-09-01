@@ -5,6 +5,6 @@ FactoryBot.define do
     password { 'foobar' }
     admin { true }
     password_confirmation { 'foobar' }
-    image { 'image.png'}
+    image { 'image.png' }
   end
 end

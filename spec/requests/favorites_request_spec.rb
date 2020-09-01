@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "Favorites", type: :request do
-
-   # Authentication test suite
-   describe 'POST /auth/login' do
+RSpec.describe 'Favorites', type: :request do
+  # Authentication test suite
+  describe 'POST /auth/login' do
     # create test user
     let!(:user) { create(:user) }
 
@@ -24,11 +23,11 @@ RSpec.describe "Favorites", type: :request do
     end
     def valid_attributes(id)
       attributes_for(:house,
-                    name: 'user2',
-                    description: 'lorem ipsum',
-                    user_id: id,
-                    price: 34,
-                    image: 'image')
+                     name: 'user2',
+                     description: 'lorem ipsum',
+                     user_id: id,
+                     price: 34,
+                     image: 'image')
     end
 
     context 'house requests' do
@@ -40,10 +39,9 @@ RSpec.describe "Favorites", type: :request do
         get '/favorites', headers: house_headers(token)
         expect(json).to eq([])
       end
-
     end
   end
-  
+
   # let(:headers) { valid_headers }
 
   # describe 'GET /favorites' do
@@ -52,9 +50,9 @@ RSpec.describe "Favorites", type: :request do
   #     before { get '/favorites', params: {}, headers: headers }
 
   #     it 'should return all user favorites' do
-        
+
   #     end
-      
+
   #     it 'should return status code 200' do
   #       expect(response).to have_http_status(200)
   #     end

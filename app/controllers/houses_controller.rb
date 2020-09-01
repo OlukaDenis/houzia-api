@@ -9,16 +9,16 @@ class HousesController < ApplicationController
 
   def create
     @house = current_user.houses.build(house_params)
-      @house.save!
-      json_response(@house, :created)
+    @house.save!
+    json_response(@house, :created)
   end
 
   def show
-    @isFavorite = current_user.favorites.any? { |hse| hse.house_id == @house.id }
-    favorites = current_user.favorites.select do |ele|
-      @favorite = ele if ele.house_id == @house.id 
+    @is_favorite = current_user.favorites.any? { |hse| hse.house_id == @house.id }
+    current_user.favorites.select do |ele|
+      @favorite = ele if ele.house_id == @house.id
     end
-    @response = { house: @house, isFavorite: @isFavorite, favorite: @favorite }
+    @response = { house: @house, isFavorite: @is_favorite, favorite: @favorite }
     json_response(@response)
   end
 

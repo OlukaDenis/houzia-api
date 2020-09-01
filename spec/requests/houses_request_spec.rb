@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Houses', type: :request do
   let(:user) { create(:user) }
-  let!(:houses) { create_list(:house,5, user_id: user.id) }
+  let!(:houses) { create_list(:house, 5, user_id: user.id) }
   let(:house_id) { houses.first.id }
   let(:headers) { valid_headers }
 
@@ -10,7 +10,6 @@ RSpec.describe 'Houses', type: :request do
     before { get '/houses', params: {}, headers: headers }
 
     context 'when the request is valid' do
-      
       it 'should return house list' do
         expect(json).not_to be_empty
         expect(json.size).to eq(5)
@@ -19,7 +18,6 @@ RSpec.describe 'Houses', type: :request do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
-
     end
   end
 
@@ -27,7 +25,6 @@ RSpec.describe 'Houses', type: :request do
     before { get "/houses/#{house_id}", params: {}, headers: headers }
 
     context 'when house exists' do
-      
       it 'should return the house' do
         expect(json).not_to be_empty
         res = json['house']
@@ -37,7 +34,6 @@ RSpec.describe 'Houses', type: :request do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
-
     end
 
     context 'when the house does not exist' do
@@ -53,10 +49,17 @@ RSpec.describe 'Houses', type: :request do
     end
   end
 
-
   describe 'POST /houses' do
     let!(:user) { create(:user) }
-    let(:valid_attributes) { { name: 'House', description: 'This is a house', image: 'image.png', price: 3000, user_id: user.id }.to_json }
+    let(:valid_attributes) do
+      {
+        name: 'House',
+        description: 'This is a house',
+        image: 'image.png',
+        price: 3000,
+        user_id: user.id
+      }.to_json
+    end
 
     context 'when request is valid' do
       before { post '/houses', params: valid_attributes, headers: headers }
@@ -81,18 +84,17 @@ RSpec.describe 'Houses', type: :request do
       it 'return status code 422' do
         expect(response).to have_http_status(422)
       end
-
     end
   end
 
   describe 'PUT /houses/:id' do
-    let(:valid_attributes) { { price: 10000 }.to_json }
+    let(:valid_attributes) { { price: 10_000 }.to_json }
 
     context 'when the house exists' do
       before { put "/houses/#{house_id}", params: valid_attributes, headers: headers }
 
       it 'updates the house' do
-        expect(json['price']).to eq(10000)
+        expect(json['price']).to eq(10_000)
       end
 
       it 'returns status code 200' do
