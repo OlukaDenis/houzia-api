@@ -51,13 +51,29 @@ $ rails db:migrate
 
 ### Usage
 
+#### Admin User
+
+Create admin user with:
+
+```sh
+$ rails db:seed
+```
+
 Start server with:
 
 ```sh
-    rails s -p 4000
+$ rails s -p 4000
 ```
 
 Open `http://localhost:4000/` in your browser.
+
+Login as admin user:
+
+> **email**: admin@gmail.com
+
+> **password**: 15qwerty
+
+Or create a normal user without admin rights using `/signup` endpoint.
 
 ### Run tests
 
@@ -65,6 +81,95 @@ Open `http://localhost:4000/` in your browser.
     rpsec --format documentation
 ```
 
+# API Documentation
+
+## Signup User
+  Returns an authentication token to authorize the subsequent resquests.
+
+* **URL:**/signup
+
+* **Method:** `POST`
+
+* **URL Params:** None
+ 
+* **Body Params Required:**
+   `username=[string]` `email=[string]` `image=[string` `password=[string]` `password_confirmation=[string]`
+
+* **Success Response:**
+    * **Code:** 201
+    * **Status:** Created
+    * **Response body:** 
+    ```sh
+        { 
+            message: "Account created successfully",
+            auth_token: "JWT_GENERATED_TOKEN" 
+        }
+    ```
+
+* **Error Response:**
+    * **Code:** 422
+    * **Status:** Unprocessable Entity
+    * **Response body:** 
+    ```sh
+        {
+            message: "Missing any of the required fields" 
+        }
+    ```
+
+* **Sample Call:**
+  ```javascript
+	axios.post(`${BASE_URL}/signup`, {
+	    username: 'John Doe',
+	    email: 'johndoe@mail.com',
+        image: 'https://img.com/image.png',
+	    password: '123456',
+	    password_confirmation: '123456',
+	  })
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+  ```
+
+## Login User
+  Returns an authentication token to authorize an existing user.
+
+* **URL** /auth/login
+* **Method:** `POST`
+
+* **URL Params** None
+ 
+* **Body Params Required:** `email=[string]` `password=[string]`
+
+* **Success Response:**
+    * **Code:** 200
+    * **Status:** OK
+    * **Response body:**
+    ```sh
+        {
+            auth_token: "JWT_GENERATED_TOKEN" 
+        }
+    ```
+
+* **Error Response:**
+  * **Code:** 401
+  * **Status:** Unauthorized
+    **Response body:** 
+    ```sh
+        { 
+            message: "Invalid Credentials" 
+        }
+    ```
+
+* **Sample Call:**
+  ```javascript
+	axios.post(`${BASE_URL}/auth/login`,
+	  {
+	    email: "johndoe@mail.com",
+	    password: "123456",
+	  }
+    )
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+  ```
 
 ## Author
 
