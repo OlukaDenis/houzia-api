@@ -20,8 +20,8 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: denis
-  password: <%= ENV['HOUZIA_DATABASE_PASSWORD'] %>
+  # username: //Add your postgres database user here
+  # password: <%= ENV['HOUZIA_DATABASE_PASSWORD'] %>  //Add your databse user password here
 
 development:
   <<: *default
