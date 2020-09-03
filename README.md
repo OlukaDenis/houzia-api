@@ -1,6 +1,6 @@
-# Project: OrgApp Tracker
+# Project: Houzia API
 
-This is a final capstone project as part of Microverse's Technical curriculum. The project details can be found [here](https://www.notion.so/Final-Capstone-Project-Find-Your-House-9a424802e7dc48eb8ef40e2ac09397d1).
+Houzia API a RESTful API that allows authenticated user to add and manipulate houses available for rent. This is a final capstone project as part of Microverse's Technical curriculum. The project details can be found [here](https://www.notion.so/Final-Capstone-Project-Find-Your-House-9a424802e7dc48eb8ef40e2ac09397d1).
 The goal of the project is to build an API that is consumed by a [React App](http://houzia-frontend.herokuapp.com/).
 
 ## Built With
