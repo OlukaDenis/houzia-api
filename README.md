@@ -78,7 +78,7 @@ Or create a normal user without admin rights using `/signup` endpoint.
 ### Run tests
 
 ```
-    rpsec --format documentation
+    $ bundle exec rpsec --format documentation
 ```
 
 # API Documentation
@@ -170,6 +170,123 @@ Or create a normal user without admin rights using `/signup` endpoint.
     .then(response => console.log(response))
     .catch(error => console.log(error))
   ```
+
+
+## Get all houses
+  Returns a list of all available houses.
+
+* **URL:**/houses
+
+* **Method:** `GET`
+
+* **URL Params:** None
+
+* **Authorization:** Bearer Token
+ 
+* **Body Params Required:** None
+
+* **Success Response:**
+    * **Code:** 200
+    * **Status:** OK
+    * **Response body:** 
+    ```sh
+        [
+            {
+                id: 1,
+                name: "House for rent",
+                description: "Description info",
+                image: "image.png",
+                price: 50000,
+                user_id: 1,
+                created_at: "2020-09-03T16:30:41.855Z",
+                updated_at: "2020-09-03T16:30:41.855Z"
+            }
+        ]
+    ```
+
+* **Error Response:**
+    * **Code:** 422
+    * **Status:** Unprocessable Entity
+    * **Response body:** 
+    ```sh
+        {
+            message: "Missing token" 
+        }
+    ```
+
+* **Sample Call:**
+  ```javascript
+	axios.get(`${BASE_URL}/houses`, 
+        {
+           headers: {
+                Authorization: "Bearer Token",
+            },
+        })
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+  ```
+
+## Admin Endpoints
+
+### Add new house
+Returns a json data of the created house
+
+* **URL:**/houses
+
+* **Method:** `POST`
+
+* **URL Params:** None
+
+* **Authorization:** Bearer Token
+ 
+* **Body Params Required:** `name=[string]` `description=[text]` `image=[string]` `price=[integer]`
+
+* **Success Response:**
+    * **Code:** 201
+    * **Status:** Created
+    * **Response body:** 
+    ```sh
+        {
+            id: 1,
+            name: "House for rent",
+            description: "Description info",
+            image: "image.png",
+            price: 50000,
+            user_id: 1,
+            created_at: "2020-09-03T16:30:41.855Z",
+            updated_at: "2020-09-03T16:30:41.855Z"
+        }
+    ```
+
+* **Error Response:**
+    * **Code:** 422
+    * **Status:** Unprocessable Entity
+    * **Response body:** 
+    ```sh
+        {
+            message: "Missing token" 
+        }
+    ```
+
+* **Sample Call:**
+  ```javascript
+    axios.post(`${BASE_URL}/houses`,
+        {
+            name: "House for rent",
+            description: "Description info",
+            image: "image.png",
+            price: 50000
+        },
+        {
+           headers: {
+                Authorization: "Bearer Token",
+            },
+        })
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+  ```
+
+
 
 ## Author
 
