@@ -287,7 +287,6 @@ Returns a json data of the created house
   ```
 
 
-
 ## Author
 
 👤 **Denis Oluka**
